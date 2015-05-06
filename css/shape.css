@@ -164,6 +164,7 @@ body {
 }
 #leafes > div {
     pointer-events: none;
+    background: none !important;
 }
 #leafes > div > .full {
     display: none;
@@ -404,6 +405,9 @@ body {
     vertical-align: top;
     -webkit-transform-style: preserve-3d;
     font-size: 0;
+}
+.hovered .circle{
+    box-shadow: 0px 0px 2px 3px #fff;
 }
 .circle + .text {
     pointer-events: none;
@@ -683,4 +687,17 @@ transform:              rotate(-34deg);
 }
 #line_runner path {
     fill: none;
+}
+
+/**/
+#leaf_svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#leaf_svg .path_outline {
+
+}
+#leaf_svg .path_shadow{
+    /*filter:url(#dropshadow);*/
 }

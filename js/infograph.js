@@ -123,23 +123,12 @@ function leaf_position(container, rad, ang) {
                         divs[i].style.top = radius * Math.sin(angle) + 'px';
                         break;
                     case 1:
-                        //radius -= delta_radius;
                         angle = 0.5 * delta;
-
                         divs[i].style.position = 'absolute';
                         divs[i].style.left = radius * Math.cos(angle) + 'px';
                         divs[i].style.top = radius * Math.sin(angle) + 'px';
-
-
                         break;
                     case 2:
-                        /*for (i; i < divs.length - 2; i++) {
-                            divs[i].style.position = 'absolute';
-                            divs[i].style.left = radius * Math.cos(angle) + 'px';
-                            divs[i].style.top = radius * Math.sin(angle) + 'px';
-                            angle += delta;
-                        }
-                        radius -= delta_radius;*/
                         angle = delta;
                         for (i; i < divs.length; i++) {
                             divs[i].style.position = 'absolute';
@@ -149,14 +138,6 @@ function leaf_position(container, rad, ang) {
                         }
                         break;
                     case 3:
-
-                        /*for (i; i < divs.length - 3; i++) {
-                            divs[i].style.position = 'absolute';
-                            divs[i].style.left = radius * Math.cos(angle) + 'px';
-                            divs[i].style.top = radius * Math.sin(angle) + 'px';
-                            angle += delta;
-                        }
-                        radius -= delta_radius;*/
                         angle = delta / 2;
                         for (i; i < divs.length; i++) {
                             divs[i].style.position = 'absolute';
@@ -609,7 +590,153 @@ function animate_path(path, incr, callb) {
         startunDrawingPath();
     }
 }
+function draw_leaf(container_id,radius,angle,rotation,color,color_light,leaf_id){
+    var container = document.getElementById(container_id),
+        container_width = container.clientWidth || container.parentNode.clientWidth,
+        container_height = container.clientHeight || container.parentNode.clientHeight,
+        start_x = container_width/ 2,
+        start_y = container_height/ 2,
+        angle_x = Math.cos((angle/180)*Math.PI) * radius,
+        angle_y = Math.sin((angle/180)*Math.PI) * radius,
+        leaf_id_holder = leaf_id.replace("leaf_","leaf_holder_"),
+        g = document.createElementNS('http://www.w3.org/2000/svg', "g"),
+        d,x1,x2,y1,y2,x3,y3,x4,y4,x5,y5,x6,y6,x7,y7;
 
+    var startAngle = rotation,
+        endAngle = startAngle + angle;
+
+    x1 = parseInt(start_x + radius*Math.cos(Math.PI*startAngle/180));
+    y1 = parseInt(start_y + radius*Math.sin(Math.PI*startAngle/180));
+
+    x2 = parseInt(start_x + radius*Math.cos(Math.PI*endAngle/180));
+    y2 = parseInt(start_y + radius*Math.sin(Math.PI*endAngle/180));
+
+    x3 = parseInt(start_x + (radius*1.1)*Math.cos(Math.PI*endAngle/180));
+    y3 = parseInt(start_y + (radius*1.1)*Math.sin(Math.PI*endAngle/180));
+
+    x4 = parseInt(start_x + (radius*1.1)*Math.cos(Math.PI*startAngle/180));
+    y4 = parseInt(start_y + (radius*1.1)*Math.sin(Math.PI*startAngle/180));
+
+    x5 = parseInt(start_x + (radius*1.15)*Math.cos(Math.PI*startAngle/180));
+    y5 = parseInt(start_y + (radius*1.15)*Math.sin(Math.PI*startAngle/180));
+
+    x6 = parseInt(start_x + (radius*1.15)*Math.cos(Math.PI*endAngle/180));
+    y6 = parseInt(start_y + (radius*1.15)*Math.sin(Math.PI*endAngle/180));
+
+    x7 = parseInt(start_x + (radius*1.1)*Math.cos(0.5*Math.PI*endAngle/180));
+    y7 = parseInt(start_y + (radius*1.1)*Math.sin(0.5*Math.PI*endAngle/180));
+
+
+
+    /*shadow part*/
+
+    var path_shadow = document.createElementNS('http://www.w3.org/2000/svg', "path");
+
+
+    d = "M"+start_x+","+start_y+"  L" + x3 + "," + y3 + "  A"+radius*1.1+","+ radius*1.1 +" 0 0,0 " + x4 + "," + y4 + " z";
+
+    path_shadow.setAttributeNS(null, "d", d);
+
+    path_shadow.setAttributeNS(null, "class", "path_shadow");
+    path_shadow.style.stroke = 'none';
+    path_shadow.style.fill = '#666';
+    path_shadow.style.filter = 'url("#filter'+leaf_id + '")';
+    /*inner part*/
+    var path_base = document.createElementNS('http://www.w3.org/2000/svg', "path");
+
+    d = "M"+start_x+","+start_y+"  L" + x1 + "," + y1 + "  A"+radius+","+ radius +" 0 0,1 " + x2 + "," + y2 + " z";
+
+    path_base.setAttributeNS(null, "d", d);
+
+    path_base.setAttributeNS(null, "class", "path_base");
+    path_base.style.stroke = '#969697';
+    path_base.style.fill = '#e6e6e6';
+
+    /*middle part*/
+
+    var path_color = document.createElementNS('http://www.w3.org/2000/svg', "path");
+
+
+    d = "M" + x1 + "," + y1 + "  A"+radius+","+ radius +" 0 0,1 " + x2 + "," + y2 + " ";
+    d += "L" + x3 + "," + y3 + "  A"+radius*1.1+","+ radius*1.1 +" 0 0,0 " + x4 + "," + y4 + " ";
+
+    path_color.setAttributeNS(null, "d", d);
+
+    path_color.setAttributeNS(null, "class", "path_color");
+    path_color.style.stroke = '#969697';
+    path_color.style.fill = color;
+
+    /*outer part*/
+
+    var path_outline = document.createElementNS('http://www.w3.org/2000/svg', "path");
+
+
+    d = "M" + x3 + "," + y3 + "  A"+radius*1.1+","+ radius*1.1 +" 0 0,0 " + x4 + "," + y4 + " ";
+    d += "L" + x5 + "," + y5 + "  A"+radius*1.15+","+ radius*1.15 +" 0 0,1 " + x6 + "," + y6 + " ";
+
+    path_outline.setAttributeNS(null, "d", d);
+
+    path_outline.setAttributeNS(null, "class", "path_outline");
+    path_outline.style.stroke = 'none';
+    path_outline.style.fill = color_light;
+
+    g.id = "path_" + leaf_id;
+
+    g.appendChild(path_shadow);
+    g.appendChild(path_base);
+    g.appendChild(path_outline);
+    g.appendChild(path_color);
+
+
+    container.appendChild(g);
+
+    var timera;
+    var r = 1.15;
+    g.onmouseover = function () {
+        document.getElementById(leaf_id_holder).className += " hovered";
+        clearInterval(timera);
+
+        function g_over(){
+             x5 = parseInt(start_x + (radius*r)*Math.cos(Math.PI*startAngle/180));
+             y5 = parseInt(start_y + (radius*r)*Math.sin(Math.PI*startAngle/180));
+
+             x6 = parseInt(start_x + (radius*r)*Math.cos(Math.PI*endAngle/180));
+             y6 = parseInt(start_y + (radius*r)*Math.sin(Math.PI*endAngle/180));
+
+             d = "M" + x3 + "," + y3 + "  A"+radius*1.1+","+ radius*1.1 +" 0 0,0 " + x4 + "," + y4 + " ";
+             d += "L" + x5 + "," + y5 + "  A"+radius*r+","+ radius*r +" 0 0,1 " + x6 + "," + y6 + " ";
+            r+=0.01;
+           path_outline.setAttributeNS(null, "d", d);
+            if (r > 1.2) {
+                r = 1.2;
+                clearInterval(timera);
+            }
+        }
+        timera = setInterval(g_over, 30);
+    }
+    g.onmouseout = function () {
+        document.getElementById(leaf_id_holder).className = document.getElementById(leaf_id_holder).className.replace(" hovered",'');
+        clearInterval(timera);
+
+        function g_over(){
+            x5 = parseInt(start_x + (radius*r)*Math.cos(Math.PI*startAngle/180));
+            y5 = parseInt(start_y + (radius*r)*Math.sin(Math.PI*startAngle/180));
+
+            x6 = parseInt(start_x + (radius*r)*Math.cos(Math.PI*endAngle/180));
+            y6 = parseInt(start_y + (radius*r)*Math.sin(Math.PI*endAngle/180));
+
+            d = "M" + x3 + "," + y3 + "  A"+radius*1.15+","+ radius*1.15 +" 0 0,0 " + x4 + "," + y4 + " ";
+            d += "L" + x5 + "," + y5 + "  A"+radius*r+","+ radius*r +" 0 0,1 " + x6 + "," + y6 + " ";
+            r-=0.01;
+            path_outline.setAttributeNS(null, "d", d);
+            if (r <= 1.15) {
+                r = 1.15;
+                clearInterval(timera);
+            }
+        }
+        timera = setInterval(g_over, 30);
+    }
+}
 /**
  * main function
  */
@@ -623,6 +750,15 @@ function infograph_init(container) {
     leaf_position(document.getElementById("leaf_holder_6"), 275, 70);
     leaf_position(document.getElementById("leaf_holder_7"), 310, 63);
     leaf_position(document.getElementById("leaf_holder_8"), 340, 55);
+
+    draw_leaf("leaf_svg",306,28,-35,"#f0720c","#fbdcc2","leaf_1");
+    draw_leaf("leaf_svg",345,30,-7,"#f0ad0c","#fbeac2","leaf_2");
+    draw_leaf("leaf_svg",375,32,23,"#f0bd42","#fbeed0","leaf_3");
+    draw_leaf("leaf_svg",407,35,55,"#d8f130","#f5fbcb","leaf_4");
+    draw_leaf("leaf_svg",442,48,90,"#c4db2b","#f0f6ca","leaf_5");
+    draw_leaf("leaf_svg",463,68,138,"#67db2b","#d9f6ca","leaf_6");
+    draw_leaf("leaf_svg",504,64,206,"#5ac124","#d6efc8","leaf_7");
+    draw_leaf("leaf_svg",535,55,-90,"#49a01c","#d1e7c6","leaf_8");
 
     line_init(document.getElementById("leaf_1"));
     line_init(document.getElementById("leaf_2"));
