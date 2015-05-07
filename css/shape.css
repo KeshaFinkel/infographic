@@ -127,6 +127,7 @@ body {
     height: 289px;
     z-index: 10;
     position: relative;
+    pointer-events: none;
 }
 .year {
     font-family: "SegoeUIBold";
@@ -690,6 +691,10 @@ transform:              rotate(-34deg);
 }
 
 /**/
+#leaf_svg_container {
+    width: 1280px;
+    height: 1339px;
+}
 #leaf_svg {
     position: absolute;
     top: 0;
