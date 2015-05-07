@@ -190,8 +190,8 @@ body {
     font-size: 20px;
 }
 #leaf_1 .small_info {
-    bottom: 0;
-    left: 230px;
+    bottom: 20px;
+    left: 220px;
 }
 #leaf_1 .small_info .title {
     color: #e46e0f;
@@ -348,8 +348,8 @@ body {
     font-size: 30px;
 }
 #leaf_7 .small_info {
-    bottom: 10px;
-    left: -136px;
+    bottom: 30px;
+    left: -106px;
 }
 #leaf_7 .small_info .title {
     color: #5ac124;
@@ -694,6 +694,9 @@ transform:              rotate(-34deg);
 #leaf_svg_container {
     width: 1280px;
     height: 1339px;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 #leaf_svg {
     position: absolute;
@@ -704,5 +707,8 @@ transform:              rotate(-34deg);
 
 }
 #leaf_svg .path_shadow{
-    /*filter:url(#dropshadow);*/
+
+}
+#path_leaf_2 .path_shadow{
+
 }

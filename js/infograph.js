@@ -640,7 +640,7 @@ function draw_leaf(container_id,radius,angle,rotation,color,color_light,leaf_id)
     path_shadow.setAttributeNS(null, "class", "path_shadow");
     path_shadow.style.stroke = 'none';
     path_shadow.style.fill = '#666';
-    path_shadow.style.filter = 'url("#filter'+leaf_id + '")';
+    path_shadow.setAttributeNS(null, "filter", "url(#filter"+leaf_id + ")");
     /*inner part*/
     var path_base = document.createElementNS('http://www.w3.org/2000/svg', "path");
 
@@ -681,6 +681,8 @@ function draw_leaf(container_id,radius,angle,rotation,color,color_light,leaf_id)
     path_outline.style.fill = color_light;
 
     g.id = "path_" + leaf_id;
+
+
 
     g.appendChild(path_shadow);
     g.appendChild(path_base);
